@@ -3,14 +3,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using API.Data;
 using API.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
-{
-    [ApiController]
-    [Route("api/[controller]")]
-    public class UsersController : ControllerBase
+{   
+    //15/9 xóa 2 này bỏ đổi kế thừa 
+    public class UsersController : BaseApiController
     {
         private readonly DataContext _context;
         public UsersController(DataContext context)
@@ -20,6 +20,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         // IEnumerable giống list mà dễ hơn 
 
          public async Task<ActionResult<IEnumerable<AppUser>>>  GetUsers(){
@@ -29,9 +30,10 @@ namespace API.Controllers
         // public ActionResult<IEnumerable<AppUser>> GetUsers(){
         //     return _context.User.ToList();
         // }
-        
+      
 
         //API/users/3 để lấy id 
+        [Authorize]
         [HttpGet("{id}")]
         // IEnumerable giống list mà dễ hơn 
         public async Task<ActionResult<AppUser>>  GetUser(int id){
